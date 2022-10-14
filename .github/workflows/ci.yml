@@ -15,7 +15,6 @@ on:
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -28,13 +27,17 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@3068fa83f9cbd7ae106cac45483635a2f3a195c9
         with:
-          ruby-version: '3.1.1'
+          ruby-version: "3.1.1"
+
       - name: Install dependencies
         run: bundle install
+
       - name: Run tests
         env:
           PGHOST: localhost
@@ -43,3 +46,6 @@ jobs:
           PGPORT: ${{ job.services.postgres.ports[5432] }}
           RAILS_ENV: test
         run: bin/rails db:create db:schema:load db:migrate && bundle exec rspec
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
