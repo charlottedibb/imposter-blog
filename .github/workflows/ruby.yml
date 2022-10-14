@@ -17,6 +17,15 @@ jobs:
   test:
 
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:11
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       - uses: actions/checkout@v3
@@ -27,4 +36,10 @@ jobs:
       - name: Install dependencies
         run: bundle install
       - name: Run tests
-        run: bundle exec rake
+        env:
+          PGHOST: localhost
+          PGUSER: postgres
+          PGPASSWORD: postgres
+          PGPORT: ${{ job.services.postgres.ports[5432] }}
+          RAILS_ENV: test
+        run: bin/rails db:create db:schema:load db:migrate && bundle exec rspec
