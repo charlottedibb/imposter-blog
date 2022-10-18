@@ -1,0 +1,6 @@
+<h1><%= @article.title %></h1>
+<p><%= @article.body %></p>
+<p>Created at: <%= @article.created_at.to_date %></p>
+<%= link_to "Edit", edit_article_path(@article) %> <%= link_to "Delete",
+article_path(@article), data: {turbo_method: :delete, turbo_confirm: "are you
+sure??"} %>
