@@ -55,6 +55,7 @@ group :development, :test do
   gem 'capybara'
   gem 'simplecov', require: false
   gem 'simplecov-cobertura', require: false
+  gem 'rails-controller-testing'
 end
 
 group :development do
