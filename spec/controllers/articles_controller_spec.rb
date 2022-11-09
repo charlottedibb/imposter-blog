@@ -3,10 +3,7 @@ require "rails_helper"
 RSpec.describe ArticlesController, type: :controller do
   describe "#index" do
     it "should repond with 200" do
-      aggregate_failures do
-        expect(response).to be_successful
-        expect(response).to have_http_status "200"
-      end
+      expect(response).to have_http_status "200"
     end
 
     it "should render the index template" do
@@ -21,10 +18,7 @@ RSpec.describe ArticlesController, type: :controller do
     context "is valid" do
       it "should respond with 200 for an existing article" do
         get :show, params: { id: article.id }
-        aggregate_failures do
-          expect(response).to be_successful
-          expect(response).to have_http_status "200"
-        end
+        expect(response).to have_http_status "200"
       end
 
       it "should render the show template" do
@@ -36,10 +30,7 @@ RSpec.describe ArticlesController, type: :controller do
     context "is invalid" do
       it "should respond with 404 for a nonexistent article" do
         get :show, params: { id: 100 }
-        aggregate_failures do
-          expect(response).to_not be_successful
-          expect(response).to have_http_status "404"
-        end
+        expect(response).to have_http_status "404"
       end
     end
   end
@@ -158,7 +149,7 @@ RSpec.describe ArticlesController, type: :controller do
 
   describe "#destroy" do
     let!(:article) { FactoryBot.create(:article) }
-    
+
     context "is valid" do
       it "should delete an article with a valid id" do
         expect {
